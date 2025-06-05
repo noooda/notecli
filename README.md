@@ -1,2 +1,2 @@
-# memocli
-MemoCLI is simple memo cli tool.
+# notecli
+NoteCLI is simple note cli tool.
