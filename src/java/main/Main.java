@@ -1,5 +1,8 @@
+import io.github.noooda.notecli.NoteCli;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        NoteCli notecli = new NoteCli();
+        notecli.run();
     }
 }
