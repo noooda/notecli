@@ -1,34 +1,56 @@
 package io.github.noooda.notecli.presentation.cli;
 
 import java.util.Scanner;
+import io.github.noooda.notecli.application.usecases.GetNote;
 
 public class Controller {
-    final private String WELCOME_MESSAGE = "NoteCLI started.";
+    private static final String START_MESSAGE = """
+        NoteCLI started.
+        --------------------""";
+
+    private final GetNote getNote;
+
+    public Controller(GetNote getNote) {
+        this.getNote = getNote;
+    }
 
     public void start() {
-        System.out.println(WELCOME_MESSAGE);
+        System.out.println(START_MESSAGE);
 
-        Scanner scanner = new Scanner(System.in);
+        printNoteNames();
 
-        while (true) {
-            String[] inputs = scanner.nextLine().split("\\s"); 
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                System.out.print("File name (or exit): ");
+                String inputLine = scanner.nextLine().trim();
 
-            boolean continuable = this.executeCommand(inputs);
+                if (inputLine.isEmpty()) continue;
 
-            if (continuable) break;
+                String[] inputs = inputLine.split("\\s+");
 
-            break;
+                if (!executeCommand(inputs)) break;
+            }
         }
+    }
 
-        scanner.close();
+    private void printNoteNames() {
+        String[] noteNames = getNote.GetAllNoteNames();
+        for (String noteName : noteNames) {
+            System.out.println(noteName);
+        }
+        System.out.println();
     }
 
     public boolean executeCommand(String[] inputs) {
-        switch (inputs[0]) {
-            case "exit":
-                return false;
-            default:
-                return true;
+        if (inputs.length == 0) {
+            return true;
         }
+
+        if ("exit".equalsIgnoreCase(inputs[0])) {
+            return false;
+        }
+
+        System.out.println("Unknown command: " + inputs[0]);
+        return true;
     }
 }
