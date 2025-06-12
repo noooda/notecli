@@ -13,11 +13,22 @@ public class Controller {
         while (true) {
             String[] inputs = scanner.nextLine().split("\\s"); 
 
-            System.out.println(inputs[0]);
+            boolean continuable = this.executeCommand(inputs);
+
+            if (continuable) break;
 
             break;
         }
 
         scanner.close();
+    }
+
+    public boolean executeCommand(String[] inputs) {
+        switch (inputs[0]) {
+            case "exit":
+                return false;
+            default:
+                return true;
+        }
     }
 }
